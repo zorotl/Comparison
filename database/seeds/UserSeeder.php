@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'role' => null,
                 'email_verified_at' => now(),
                 'password' => Hash::make('test1234'),
-                'remember_token' => Str::random(10),
+                'remember_token' => null,
             ]
         );
         $user->save();
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => Hash::make('test1234'),
-                'remember_token' => Str::random(10),
+                'remember_token' => null,
             ]
         );
         $user->save();
