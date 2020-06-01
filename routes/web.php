@@ -20,3 +20,8 @@ Auth::routes(['verify' => true]);
 // Zur Home-Seite entweder mit Haupt-URL oder mit /home
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
+
+// CRUD-Routes für User, Answer und Question
+Route::resource('question', 'QuestionController');
+Route::resource('answer', 'AnswerController');
+Route::resource('user', 'UserController');
