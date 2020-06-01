@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class QuestionController extends Controller
 {
@@ -14,7 +15,15 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $msg_success = Session::get('msg_success');
+
+        $questions = Question::all();
+        return view('question.index')->with(
+            [
+                'questions'=> $questions,
+                'msg_success' => $msg_success
+            ]
+        );
     }
 
     /**
