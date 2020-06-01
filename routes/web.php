@@ -14,10 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Automatische Laravel-Routes für das Loginsystem inkl. E-Mail-Validierung
 Auth::routes(['verify' => true]);
 
+// Zur Home-Seite entweder mit Haupt-URL oder mit /home
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
