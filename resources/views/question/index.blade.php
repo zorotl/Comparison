@@ -10,50 +10,28 @@
                     <div class="card-header">Fragen - Übersicht</div>
 
                     <div class="card-body">
-                        <form class="form" method="post" action="{{ asset("/select") }}">
-                            @csrf
-                            <fieldset>
-                                <table style="width: 600px">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 55%">Name</th>
-                                        <th style="width: 15%">Ja</th>
-                                        <th style="width: 15%">Vielleicht</th>
-                                        <th style="width: 15%">Nein</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($questions as $q)
-                                        <tr>
-                                            <td>{{ $q->name }} ({{ $q->description }})</td>
-                                            <td style="text-align: center">
-                                                <input id="ja" type="radio" name="{{ $q->id }}" value="ja"
-                                                       @if (isset($answers[$q->id]) and $answers[$q->id] === "ja")
-                                                       checked="checked"
-                                                       @endif
-                                                       required>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <input id="ev" type="radio" name="{{ $q->id }}" value="ev"
-                                                       @if (isset($answers[$q->id]) and $answers[$q->id] === "ev")
-                                                       checked="checked"
-                                                       @endif
-                                                       required>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <input id="nein" type="radio" name="{{ $q->id }}" value="nein"
-                                                       @if (!isset($answers[$q->id]) or $answers[$q->id] === "nein" or $answers[$q->id] === "")
-                                                       checked="checked"
-                                                       @endif
-                                                       required>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                <input type="submit" value="Absenden" name="submit" />
-                            </fieldset>
-                        </form>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                @foreach($questions as $q)
+                                    <li class="list-group-item">
+                                        <span>{{ $q->name }}</span>
+                                        <span class="text-muted">({{ $q->description }})</span>
+                                        <div class="float-right">
+                                            <a class="ml-2 btn btn-sm btn-outline-primary" href="/question/{{ $q->id }}/edit">
+                                                <i class="fas fa-edit"></i>
+                                                Bearbeiten
+                                            </a>
+                                            <form style="display: inline;" action="/question/{{ $q->id }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input class="btn btn-outline-danger btn-sm ml-2" type="submit" value="Löschen">
+                                            </form>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <a class="btn btn-success btn-sm mt-3" href="question/create"><i class="fas fa-plus-circle"></i> Neues Frage anlegen</a>
+                        </div>
                     </div>
                 </div>
             </div>
