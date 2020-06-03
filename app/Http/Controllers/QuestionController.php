@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class QuestionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('verified');
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +26,7 @@ class QuestionController extends Controller
         $msg_success = Session::get('msg_success');
 
         $questions = Question::all();
+
         return view('question.index')->with(
             [
                 'questions'=> $questions,
