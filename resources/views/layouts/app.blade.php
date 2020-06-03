@@ -41,7 +41,7 @@
                         <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" href="/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('question*') ? 'active' : '' }}" href="/question">Auswahl</a>
+                        <a class="nav-link {{ Request::is('answer*') ? 'active' : '' }}" href="/answer">Auswahl</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('evaluate*') ? 'active' : '' }}" href="/evaluate">Auswertung</a>

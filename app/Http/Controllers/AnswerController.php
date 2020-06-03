@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AnswerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('verified');
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,19 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        //
+        $msg_success = Session::get('msg_success');
+
+        $questions = Question::all();
+        $answers = Answer::where('user_id', auth()->id())->first();
+        $answers = (isset($answers->answers)) ? json_decode($answers->answers, true) : array();
+
+        return view('answer.index')->with(
+            [
+                'questions'=> $questions,
+                'answers' => $answers,
+                'msg_success' => $msg_success
+            ]
+        );
     }
 
     /**
