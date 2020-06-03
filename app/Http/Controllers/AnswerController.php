@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AnswerController extends Controller
@@ -14,7 +15,7 @@ class AnswerController extends Controller
         $this->middleware('verified');
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +56,19 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->except('submit', '_token');     // Request aus Form in Array speichern, exklusive submit und token
+        $string = json_encode($input);                          // Arrays $_POST[] in JSON-String umwandeln
+
+        $answer = Answer::where('user_id', Auth::id())->first();
+
+        if (!isset($answer))
+            $answer = new Answer;       // Neuen Eintrag in Datenbank speichern
+
+        $answer->user_id = Auth::id();
+        $answer->answers = $string;
+        $answer->save();
+
+        return redirect('/answer/')->with('msg_success', 'Deine Antworten wurden erfolgreich gespeichert!');
     }
 
     /**

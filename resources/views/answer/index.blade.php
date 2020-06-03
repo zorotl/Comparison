@@ -7,10 +7,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Fragen - Übersicht</div>
+                    <div class="card-header">Fragen beantworten</div>
 
                     <div class="card-body">
-                        <form class="form" method="post" action="{{ asset("/select") }}">
+                        <form class="form" method="post">
                             @csrf
                             <fieldset>
                                 <table style="width: 600px">
