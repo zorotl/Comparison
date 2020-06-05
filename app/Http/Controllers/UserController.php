@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('verified');
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::where('id', Auth::id())->first();
+
+        return view('user.index')->with('user', $user);
     }
 
     /**
