@@ -25,3 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('question', 'QuestionController');
 Route::resource('answer', 'AnswerController');
 Route::resource('user', 'UserController');
+
+// Routes für den Vergleich der Antworten
+Route::get('/evaluate', 'AnswerController@evaluateStart');
+Route::post('/evaluate', 'AnswerController@evaluation');
