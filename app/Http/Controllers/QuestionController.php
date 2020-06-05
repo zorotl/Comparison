@@ -70,7 +70,9 @@ class QuestionController extends Controller
 
         $question->save();
 
-        return redirect('/question')->with('msg_success', 'Speichern erfolgreich.');
+        return redirect('/question')->with(
+            'msg_success', 'Speichern von <b>' . $request->name . '</b> erfolgreich.'
+        );
     }
 
     /**
@@ -93,7 +95,26 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required | min:3',
+                'shortName' => 'max:10'
+            ]
+        );
+
+        $question->update(
+            [
+                'name' => $request->name,
+                'description' => $request->description,
+                'shortName' => $request->shortName
+            ]
+        );
+
+        $question->save();
+
+        return redirect('/question')->with(
+            'msg_success', 'Änderung von <b>' . $request->name . '</b> erfolgreich gespeichert.'
+        );
     }
 
     /**
@@ -104,6 +125,11 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $oldName = $question->name;
+        $question->delete();
+
+        return back()->with([
+            'msg_success' => 'Die Frage <b>' .$oldName. '</b> wurde gelöscht'
+        ]);
     }
 }
