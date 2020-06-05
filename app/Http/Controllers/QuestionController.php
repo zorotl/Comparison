@@ -42,7 +42,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('question.create');
     }
 
     /**
@@ -53,18 +53,24 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate(
+            [
+                'name' => 'required | min:3',
+                'shortName' => 'max:10'
+            ]
+        );
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Question $question)
-    {
-        //
+        $question = new Question(
+            [
+                'name' => $request->name,
+                'description' => $request->description,
+                'shortName' => $request->shortName
+            ]
+        );
+
+        $question->save();
+
+        return redirect('/question')->with('msg_success', 'Speichern erfolgreich.');
     }
 
     /**
@@ -75,7 +81,7 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        return view('question.edit')->with('question', $question);
     }
 
     /**
