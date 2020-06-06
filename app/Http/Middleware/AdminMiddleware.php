@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() && auth()->user()->rolle !== "admin")
+        if (Auth::user() && auth()->user()->role !== "admin")
         {
             abort(403, "Nur für Admins!");
         }

@@ -14,6 +14,7 @@ class QuestionController extends Controller
     {
         $this->middleware('verified');
         $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     /**

@@ -70,7 +70,9 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ url('/user') }}">User-Konto</a>
-                                <a class="dropdown-item" href="/question">Fragen bearbeiten</a>
+                                @if(auth()->user()->role === "admin")
+                                    <a class="dropdown-item" href="/question">Fragen bearbeiten</a>
+                                @endif
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
