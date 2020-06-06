@@ -23,9 +23,10 @@
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-dark bg-secondary shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
+                <i class="fas fa-grin-hearts"></i>
                 {{ config('app.name', 'Comparison') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -112,6 +113,26 @@
 
         @yield('content')
     </main>
+
+
+    <!-- Footer -->
+
+
+{{--    <footer class="footer mt-auto py-3">--}}
+{{--        <div class="container">--}}
+{{--            <span class="text-muted">Place sticky footer content here.</span>--}}
+{{--        </div>--}}
+{{--    </footer>--}}
+
+    <footer class="footer mt-auto py-3 bg-primary text-white text-center">
+        <ul class="list-inline">
+            <li class="list-inline-item pr-3"><a class="text-white" href="#">info@stws.ch</a></li>
+            <li class="list-inline-item pr-3"><a class="text-white" href="#">Impressum</a></li>
+            <li class="list-inline-item pr-3"><a class="text-white" href="#">Datenschutz</a></li>
+            <li class="list-inline-item">&copy; 2020 Comparison</li>
+        </ul>
+        <p>&copy; 2020 Comparison</p>
+    </footer>
 </div>
 </body>
 </html>
