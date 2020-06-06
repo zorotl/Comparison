@@ -24,8 +24,8 @@
                                         <form style="display: inline;" action="/question/{{ $q->id }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <input class="btn btn-outline-danger btn-sm ml-2" type="submit"
-                                                   value="Löschen">
+                                            <input onclick="return confirm('Wirklich löschen?')"
+                                                   class="btn btn-outline-danger btn-sm ml-2" type="submit" value="Löschen">
                                         </form>
                                     </div>
                                 </li>
