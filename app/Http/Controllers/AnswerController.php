@@ -77,6 +77,9 @@ class AnswerController extends Controller
             ]
         );
 
+        $this->_updateAnswerStrings($request->codeOwn);
+        $this->_updateAnswerStrings($request->codeOther);
+
         // Alle Fragen laden
         $questions = Question::all();
 
@@ -86,7 +89,8 @@ class AnswerController extends Controller
 
         //Die zu vergleichenden Antworten laden
         $user = User::where('code', $request->codeOther)->first();
-        $answersOther = Answer::where('user_id', $user->id)->first();
+        if (isset($user->id))
+            $answersOther = Answer::where('user_id', $user->id)->first();
         $answersOther = (isset($answersOther->answers)) ? json_decode($answersOther->answers, true) : null;
 
         // Mit Fehler zurück, wenn Antworten von einem der beiden User nicht gesetzt sind
@@ -104,5 +108,56 @@ class AnswerController extends Controller
         }
 
         return view('answer.evaluatePost')->with('result', $compareResult);
+    }
+
+    protected function _updateAnswerStrings($code)
+    {
+        $id = array();
+        $newAnswers = array();
+
+        // Alle Fragen laden
+        $questions = Question::all();
+
+        // Die ID's der Fragen im Array $id[] speichern
+        $i = 0;
+        foreach ($questions as $question)
+        {
+            $id[$i] = $question['id'];
+            $i++;
+        }
+
+        // Laden der Antworten
+        $user = User::where('code', $code)->first();
+        if (isset($user->id))
+            $answers = Answer::where('user_id', $user->id)->first();
+
+        // Antworten in assoc. Array  umwandeln
+        $answersArray = (isset($answers->answers)) ? json_decode($answers->answers, true) : null;
+
+        // Prüfung, ob auslesen und Umwandlung ok
+        if ($answersArray === null)
+            return redirect()->back()->withErrors(['Error002' => 'Code ungültig oder Antworten von einem der beiden Usern nicht gesetzt (E002)']);
+
+        // Antwort-Array aktualisieren
+        foreach ($id as $i)
+        {
+            if (isset($answersArray[$i]))
+                $newAnswers[$i] = $answersArray[$i];    // Wenn Antwort vorhandne, gleiche Antwort setzen
+            else
+                $newAnswers[$i] = "nein";               // Wenn keine Antwort vorhanden, als Standard "nein"
+        }
+
+        // Array newAnswers in JSON-String umwandeln
+        $string = json_encode($newAnswers);
+
+        // Antworten für UPDATE vorbereiten
+        $answers->update(
+            [
+                'answers' => $newAnswers
+            ]
+        );
+
+        // UPDATE ausführen
+        $answers->save();
     }
 }
