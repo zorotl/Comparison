@@ -13,7 +13,7 @@
                         <form class="form" method="post">
                             @csrf
                             <fieldset>
-                                <table style="width: 600px">
+                                <table class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th style="width: 55%">Name</th>
@@ -26,21 +26,21 @@
                                     @foreach($questions as $q)
                                         <tr>
                                             <td>{{ $q->name }} ({{ $q->description }})</td>
-                                            <td style="text-align: center">
+                                            <td>
                                                 <input id="ja" type="radio" name="{{ $q->id }}" value="ja"
                                                        @if (isset($answers[$q->id]) and $answers[$q->id] === "ja")
                                                        checked="checked"
                                                        @endif
                                                        required>
                                             </td>
-                                            <td style="text-align: center">
+                                            <td>
                                                 <input id="ev" type="radio" name="{{ $q->id }}" value="ev"
                                                        @if (isset($answers[$q->id]) and $answers[$q->id] === "ev")
                                                        checked="checked"
                                                        @endif
                                                        required>
                                             </td>
-                                            <td style="text-align: center">
+                                            <td>
                                                 <input id="nein" type="radio" name="{{ $q->id }}" value="nein"
                                                        @if (!isset($answers[$q->id]) or $answers[$q->id] === "nein" or $answers[$q->id] === "")
                                                        checked="checked"
@@ -51,7 +51,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                <input type="submit" value="Absenden" name="submit" />
+                                <input class="btn btn-primary mt-4" type="submit" value="Antworten speichern">
                             </fieldset>
                         </form>
                     </div>
