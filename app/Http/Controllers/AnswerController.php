@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Question;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -63,11 +64,45 @@ class AnswerController extends Controller
 
     public function evaluateStart()
     {
-
+        $user = User::where('id', Auth::id())->first();
+        return view('answer.evaluate')->with('user', $user);
     }
 
-    public function evaluation()
+    public function evaluation(Request $request)
     {
+        $request->validate(
+            [
+                'codeOwn' => 'required | min:10 | max:30',
+                'codeOther' => 'required | different:codeOwn | min:10 | max:30'
+            ]
+        );
 
+        // Alle Fragen laden
+        $questions = Question::all();
+
+        // Die eigenen Antworten laden
+        $answersOwn = Answer::where('user_id', Auth::id())->first();
+        $answersOwn = (isset($answersOwn->answers)) ? json_decode($answersOwn->answers, true) : null;
+
+        //Die zu vergleichenden Antworten laden
+        $user = User::where('code', $request->codeOther)->first();
+        $answersOther = Answer::where('user_id', $user->id)->first();
+        $answersOther = (isset($answersOther->answers)) ? json_decode($answersOther->answers, true) : null;
+
+        // Mit Fehler zurück, wenn Antworten von einem der beiden User nicht gesetzt sind
+        if ($answersOwn === null || $answersOther === null)
+            return redirect()->back()->withErrors(['Error001' => 'Code ungültig oder Antworten von einem der beiden Usern nicht gesetzt']);
+
+        // Array mit den übereinstimmendne Antworten erzeugen
+        $i = 0;
+        foreach ($answersOwn as $key => $value)
+        {
+            $checkVar = $value . $answersOther[$key];
+            if ($checkVar === "jaja" || $checkVar === "evev" || $checkVar === "jaev" || $checkVar === "evja")
+                $compareResult[$questions[$i]->name] = $questions[$i]->description;
+            $i++;
+        }
+
+        return view('answer.evaluatePost')->with('result', $compareResult);
     }
 }
