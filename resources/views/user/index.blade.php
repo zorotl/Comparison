@@ -15,7 +15,11 @@
                             <li class="list-group-item"><b>Username: </b>{{ $user->name }}</li>
                             <li class="list-group-item"><b>E-Mail: </b>{{ $user->email }}</li>
                             <li class="list-group-item"><b>Benutzerrolle: </b>
-                                {{ \Illuminate\Support\Str::of($user->role)->ucfirst() ?? "User" }}</li>
+                                @if($user->role !== null)
+                                    {{ ucfirst($user->role) }}</li>
+                                @else
+                                    User</li>
+                                @endif
                             <li class="list-group-item"><b>Eigener Code: </b>{{ $user->code }}</li>
                             <li class="list-group-item"><b>Mitglied seit: </b>
                                 {{ \Illuminate\Support\Carbon::parse($user->created_at)->locale('de_CH')->isoFormat('LL') }}
