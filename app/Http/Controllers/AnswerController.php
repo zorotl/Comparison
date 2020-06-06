@@ -151,9 +151,8 @@ class AnswerController extends Controller
         $string = json_encode($newAnswers);
 
         // Antworten für UPDATE vorbereiten
-        $answers->update(
-            [
-                'answers' => $newAnswers
+        $answers->update(         [
+                'answers' => $string
             ]
         );
 

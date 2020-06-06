@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Nachfolgend eine Liste von Übereinstimmungen</div>
+                    <div class="card-header">Nachfolgend die Übereinstimmungen</div>
 
                     <div class="card-body">
                         <table class="table table-striped">
