@@ -10,6 +10,20 @@
                     <div class="card-header">Antworten vergleichen</div>
 
                     <div class="card-body">
+
+                        @guest
+                            <div class="alert alert-primary" role="alert">
+                                Hallo Gast,
+                                <br><br>
+                                Um von allen Vorteilen zu profitieren,
+                                <a class="alert-link" href="/login">logge dich ein</a> oder
+                                <a class="alert-link" href="/register">registriere dich</a> noch heute.
+                                <br><br>
+                                Es besteht aber auch die Möglichkeit, diese Website ohne Login
+                                und ohne Angabe persönlicher Daten (Name, E-Mail, usw.) zu verwenden.
+                            </div>
+                        @endguest
+
                         <form action="/evaluate" method="post">
                             @csrf
                             <div class="form-group">

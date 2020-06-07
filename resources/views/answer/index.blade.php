@@ -10,14 +10,20 @@
                     <div class="card-header">Fragen beantworten</div>
 
                     <div class="card-body">
-                        <div class="">
-                            Um von allen Vorteilen zu profitieren,
-                            <a href="/login">logge dich ein</a> oder
-                            <a href="/register">registriere dich</a> noch heute.
 
-                            Es besteht aber auch die Möglichkeit, diese Website ohne Login
-                            und ohne Angabe persönlicher Daten (Name, eMail, usw.) zu verwenden.
-                        </div>
+                        @guest
+                            <div class="alert alert-primary" role="alert">
+                                Hallo Gast,
+                                <br><br>
+                                Um von allen Vorteilen zu profitieren,
+                                <a class="alert-link" href="/login">logge dich ein</a> oder
+                                <a class="alert-link" href="/register">registriere dich</a> noch heute.
+                                <br><br>
+                                Es besteht aber auch die Möglichkeit, diese Website ohne Login
+                                und ohne Angabe persönlicher Daten (Name, E-Mail, usw.) zu verwenden.
+                            </div>
+                        @endguest
+
                         <form class="form" method="post">
                             @csrf
                             <fieldset>
