@@ -42,7 +42,6 @@ class CustomResetPasswordNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        //$link = url( "/password/reset/?token=" . $notifiable->remember_token );
         $link = url( "/password/reset/" . $this->token . "?email=" . $notifiable->email);
 
         return ( new MailMessage )
@@ -54,8 +53,6 @@ class CustomResetPasswordNotification extends Notification
             ->action( 'Jetzt zurücksetzen', $link )
             ->line( 'Dieser Link ist die nächsten 60 Minuten gültig.' )
             ->line( 'Falls du kein neues Passwort angefragt hast, ignoriere bitte dieses E-Mail.' );
-            //->salutation('Freundliche Grüsse, dein Comparison-Team');
-
     }
 
     /**

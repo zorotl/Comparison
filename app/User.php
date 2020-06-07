@@ -6,10 +6,22 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomResetPasswordNotification;
+use App\Notifications\CustomEmailVerificationNotification;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+
+    /**
+     * Send the email verification notification.
+     *
+     * @param  string
+     * @return void
+     */
+//    public function sendEmailVerificationNotification()
+//    {
+//        $this->notify(new CustomEmailVerificationNotification());
+//    }
 
     /**
      * Send the password reset notification.
