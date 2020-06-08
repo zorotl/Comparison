@@ -27,6 +27,36 @@
                         <form class="form" method="post">
                             @csrf
                             <fieldset>
+
+                                @guest
+                                    <br>
+                                    <div>
+                                        Füllst du dieses Formular als 1. oder als 2 Person aus?<br>
+                                        <div class="form-check d-inline">
+                                            <input class="form-check-input" type="radio" name="firstSecond" id="first"
+                                                   value="first" checked>
+                                            <label class="form-check-label" for="first">
+                                                Person 1
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-inline ml-5">
+                                            <input class="form-check-input" type="radio" name="firstSecond" id="second"
+                                                   value="second">
+                                                <label class="form-check-label" for="second">
+                                                    Person 2
+                                                </label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label for="generalCode">Gemeinsamer Code</label>
+                                        <input type="text" class="form-control" id="generalCode"
+                                               aria-describedby="generalCode"
+                                               placeholder="1. Person: Gemeinsamen Code festlegen | 2.Person: Gemeinsamen Code eingeben">
+                                    </div>
+                                    <br>
+                                @endguest
+
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
