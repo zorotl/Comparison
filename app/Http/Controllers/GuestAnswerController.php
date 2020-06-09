@@ -42,7 +42,7 @@ class GuestAnswerController extends Controller
         if ($firstSecond === "second")
             $count = GuestAnswer::where('general_code', $generalCode)->count();
 
-        if ($count === 0)
+        if (isset($count) && $count === 0)
             return false;
 
         // Request aus Form in Array speichern, exklusive submit, token, firstSecond, generalCode
