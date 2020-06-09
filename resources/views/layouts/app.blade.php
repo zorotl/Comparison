@@ -133,7 +133,6 @@
             <li class="list-inline-item pr-3"><a class="text-white" href="#">Datenschutz</a></li>
             <li class="list-inline-item">&copy; 2020 Comparison</li>
         </ul>
-        <p>&copy; 2020 Comparison</p>
     </footer>
 </div>
 </body>
