@@ -26,14 +26,28 @@
 
                         <form action="/evaluate" method="post">
                             @csrf
+                            @guest
+                                <div class="form-group">
+                                    <label for="generalCode">Gemeinsamer Code</label>
+                                    <input type="text" class="form-control {{ $errors->has('generalCode') ? 'border-danger' : ''}}"
+                                           id="generalCode" name="generalCode" value="{{ old('generalCode') }}">
+                                    <small class="form-text text-danger">{!! $errors->first('generalCode') !!}</small>
+                                </div>
+                            @endguest
                             <div class="form-group">
-                                <label for="codeOwn">Eigener Code</label>
-                                <input type="text" class="form-control {{ $errors->has('codeOwn') ? 'border-danger' : ''}}"
-                                       id="codeOwn" name="codeOwn" value="{{ $user->code ?? old('codeOwn') }}" readonly>
+                                <label for="codeOwn">Erster persönlicher Code</label>
+                                @auth
+                                    <input type="text" class="form-control {{ $errors->has('codeOwn') ? 'border-danger' : ''}}"
+                                           id="codeOwn" name="codeOwn" value="{{ $user->code ?? old('codeOwn') }}" readonly>
+                                @endauth
+                                @guest
+                                    <input type="text" class="form-control {{ $errors->has('codeOwn') ? 'border-danger' : ''}}"
+                                           id="codeOwn" name="codeOwn" value="{{ old('codeOwn') }}" >
+                                @endguest
                                 <small class="form-text text-danger">{!! $errors->first('codeOwn') !!}</small>
                             </div>
                             <div class="form-group">
-                                <label for="codeOther">Zweiter Code</label>
+                                <label for="codeOther">Zweiter persönlicher Code</label>
                                 <input type="text" class="form-control {{ $errors->has('codeOther') ? 'border-danger' : ''}}"
                                        id="codeOther" name="codeOther" value="{{ old('codeOther') }}">
                                 <small class="form-text text-danger">{!! $errors->first('codeOther') !!}</small>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\GuestAnswer;
 use App\Question;
 use App\User;
 use Illuminate\Http\Request;
@@ -76,7 +77,11 @@ class AnswerController extends Controller
                 }
                 elseif ($firstSecond === "second")
                 {
-                    // dd("text second");
+                    return redirect('/answer')
+                    ->with('msg_success', 'Deine Antworten wurden erfolgreich gespeichert! <br><br>
+                        Merke dir den gewählten gemeinsamen Code sowie deinen persönlichen Code: ' . $uniqid .
+                        '<br><br>Ihr könnt nun eure Antworten <a href="/evaluate">verkleichen</a>.
+                        <br><br>Dazu benötigt ihr den gemeinsamen Code und beide persönlichen Codes.');
                 }
             }
 
@@ -108,32 +113,57 @@ class AnswerController extends Controller
 
     public function evaluation(Request $request)
     {
-        $request->validate(
-            [
-                'codeOwn' => 'required | min:10 | max:30',
-                'codeOther' => 'required | different:codeOwn | min:10 | max:30'
-            ]
-        );
+        if (isset($request->generalCode))
+        {
+            $request->validate(
+                [
+                    'codeOwn' => 'required | min:10 | max:30',
+                    'codeOther' => 'required | different:codeOwn | min:10 | max:30',
+                    'generalCode' => 'required'
+                ]
+            );
 
-        $this->_updateAnswerStrings($request->codeOwn);
-        $this->_updateAnswerStrings($request->codeOther);
+            // Die ersten Antworten laden
+            $answersOwn = GuestAnswer::where('general_code', $request->generalCode)
+                                        ->where('personal_code', $request->codeOwn)
+                                        ->first();
+            $answersOwn = (isset($answersOwn->answers)) ? json_decode($answersOwn->answers, true) : null;
 
-        // Alle Fragen laden
-        $questions = Question::all();
+            //Die zweiten Antworten laden
+            $answersOther = GuestAnswer::where('general_code', $request->generalCode)
+                                        ->where('personal_code', $request->codeOther)
+                                        ->first();
+            $answersOther = (isset($answersOther->answers)) ? json_decode($answersOther->answers, true) : null;
+        }
+        else
+        {
+            $request->validate(
+                [
+                    'codeOwn' => 'required | min:10 | max:30',
+                    'codeOther' => 'required | different:codeOwn | min:10 | max:30'
+                ]
+            );
 
-        // Die eigenen Antworten laden
-        $answersOwn = Answer::where('user_id', Auth::id())->first();
-        $answersOwn = (isset($answersOwn->answers)) ? json_decode($answersOwn->answers, true) : null;
+            $this->_updateAnswerStrings($request->codeOwn);
+            $this->_updateAnswerStrings($request->codeOther);
 
-        //Die zu vergleichenden Antworten laden
-        $user = User::where('code', $request->codeOther)->first();
-        if (isset($user->id))
-            $answersOther = Answer::where('user_id', $user->id)->first();
-        $answersOther = (isset($answersOther->answers)) ? json_decode($answersOther->answers, true) : null;
+            // Die eigenen Antworten laden
+            $answersOwn = Answer::where('user_id', Auth::id())->first();
+            $answersOwn = (isset($answersOwn->answers)) ? json_decode($answersOwn->answers, true) : null;
+
+            //Die zu vergleichenden Antworten laden
+            $user = User::where('code', $request->codeOther)->first();
+            if (isset($user->id))
+                $answersOther = Answer::where('user_id', $user->id)->first();
+            $answersOther = (isset($answersOther->answers)) ? json_decode($answersOther->answers, true) : null;
+        }
 
         // Mit Fehler zurück, wenn Antworten von einem der beiden User nicht gesetzt sind
         if ($answersOwn === null || $answersOther === null)
             return redirect()->back()->withErrors(['Error001' => 'Code ungültig oder Antworten von einem der beiden Usern nicht gesetzt']);
+
+        // Alle Fragen laden
+        $questions = Question::all();
 
         // Array mit den übereinstimmendne Antworten erzeugen
         $i = 0;
@@ -196,5 +226,7 @@ class AnswerController extends Controller
 
         // UPDATE ausführen
         $answers->save();
+
+        return true;
     }
 }
