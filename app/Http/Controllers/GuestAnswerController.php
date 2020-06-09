@@ -33,9 +33,32 @@ class GuestAnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request):string
     {
-        //
+        $generalCode = $request->generalCode;
+
+        $firstSecond = $request->firstSecond;
+
+        if ($firstSecond === "second")
+            $count = GuestAnswer::where('general_code', $generalCode)->count();
+
+        if ($count === 0)
+            return false;
+
+        // Request aus Form in Array speichern, exklusive submit, token, firstSecond, generalCode
+        $input = $request->except('submit', '_token', 'firstSecond', 'generalCode');
+
+        $string = json_encode($input);          // Arrays $input in JSON-String umwandeln
+        $uniqid = uniqid();
+
+        // Neuen Eintrag für DB vorbereiten und speichern
+        $guestAnswer = new GuestAnswer;
+        $guestAnswer->answers = $string;
+        $guestAnswer->general_code = $generalCode;
+        $guestAnswer->personal_code = $uniqid;
+        $guestAnswer->save();
+
+        return $uniqid;
     }
 
     /**

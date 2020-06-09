@@ -50,8 +50,7 @@
                                     <br>
                                     <div class="form-group">
                                         <label for="generalCode">Gemeinsamer Code</label>
-                                        <input type="text" class="form-control" id="generalCode"
-                                               aria-describedby="generalCode"
+                                        <input type="text" class="form-control" name="generalCode"  id="generalCode" aria-describedby="generalCode"
                                                placeholder="1. Person: Gemeinsamen Code festlegen | 2.Person: Gemeinsamen Code eingeben">
                                     </div>
                                     <br>

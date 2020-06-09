@@ -15,6 +15,9 @@ class CreateGuestAnswersTable extends Migration
     {
         Schema::create('guest_answers', function (Blueprint $table) {
             $table->id();
+            $table->text('answers');
+            $table->text('general_code');
+            $table->text('personal_code');
             $table->timestamps();
         });
     }

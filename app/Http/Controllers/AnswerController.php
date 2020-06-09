@@ -47,19 +47,57 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except('submit', '_token');     // Request aus Form in Array speichern, exklusive submit und token
-        $string = json_encode($input);                          // Arrays $_POST[] in JSON-String umwandeln
+        if (isset($request->firstSecond))
+        {
+            $request->validate(
+                [
+                    'generalCode' => 'required | min:6'
+                ]
+            );
 
-        $answer = Answer::where('user_id', Auth::id())->first();
+            $guestAnswer = new GuestAnswerController();
+            $uniqid = $guestAnswer->store($request);
 
-        if (!isset($answer))
-            $answer = new Answer;       // Neuen Eintrag in Datenbank speichern
+            if (!$uniqid)
+            {
+                return redirect('/answer')
+                    ->withErrors(['msg_error' => 'Der angegebene gemeinsame Code wurde nicht gefunden.']);
+            }
+            else
+            {
+                $firstSecond = $request->firstSecond;
 
-        $answer->user_id = Auth::id();
-        $answer->answers = $string;
-        $answer->save();
+                if ($firstSecond === "first")
+                {
+                    return redirect('/answer')
+                        ->with('msg_success', 'Deine Antworten wurden erfolgreich gespeichert! <br><br>
+                        Merke dir den gewählten gemeinsamen Code sowie deinen persönlichen Code: ' . $uniqid .
+                        '<br><br>Bitte nun die 2.Person den Frageboden auszufüllen. Dazu benötigt sie den gemeinsamen Code.');
+                }
+                elseif ($firstSecond === "second")
+                {
+                    // dd("text second");
+                }
+            }
 
-        return redirect('/answer/')->with('msg_success', 'Deine Antworten wurden erfolgreich gespeichert!');
+
+        }
+        else
+        {
+            $input = $request->except('submit', '_token');     // Request aus Form in Array speichern, exklusive submit und token
+            $string = json_encode($input);                          // Arrays $_POST[] in JSON-String umwandeln
+
+            $answer = Answer::where('user_id', Auth::id())->first();
+
+            if (!isset($answer))
+                $answer = new Answer;       // Neuen Eintrag in Datenbank speichern
+
+            $answer->user_id = Auth::id();
+            $answer->answers = $string;
+            $answer->save();
+
+            return redirect('/answer/')->with('msg_success', 'Deine Antworten wurden erfolgreich gespeichert!');
+        }
     }
 
     public function evaluateStart()
