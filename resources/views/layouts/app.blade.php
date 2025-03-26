@@ -131,7 +131,7 @@
             <li class="list-inline-item pr-3"><a class="text-white" href="#">info@stws.ch</a></li>
             <li class="list-inline-item pr-3"><a class="text-white" href="#">Impressum</a></li>
             <li class="list-inline-item pr-3"><a class="text-white" href="#">Datenschutz</a></li>
-            <li class="list-inline-item">&copy; 2020 Comparison</li>
+            <li class="list-inline-item">&copy; <?php echo date("Y"); ?> Comparison</li>
         </ul>
     </footer>
 </div>
