@@ -68,7 +68,12 @@
                                     <tbody>
                                     @foreach($questions as $q)
                                         <tr>
-                                            <td>{{ $q->name }} ({{ $q->description }})</td>
+                                            <td>
+                                                {{ $q->name }}
+                                                @if (!empty($q->description))
+                                                    ({{ $q->description }})
+                                                @endif
+                                            </td>
                                             <td>
                                                 <input id="ja" type="radio" name="{{ $q->id }}" value="ja"
                                                        @if (isset($answers[$q->id]) and $answers[$q->id] === "ja")
