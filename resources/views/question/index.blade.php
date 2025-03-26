@@ -14,7 +14,11 @@
                             @foreach($questions as $q)
                                 <li class="list-group-item">
                                     <span>{{ $q->name }}</span>
-                                    <span class="text-muted">({{ $q->description }})</span>
+
+                                    @if (!empty($q->description))
+                                        <span class="text-muted">({{ $q->description }})</span>
+                                    @endif
+
                                     <div class="float-right">
                                         <a class="ml-2 btn btn-sm btn-outline-primary"
                                            href="/question/{{ $q->id }}/edit">
